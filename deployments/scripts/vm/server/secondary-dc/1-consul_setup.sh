@@ -22,48 +22,15 @@ mkdir -p /opt/policies
 
 cd /opt/consul/tls/
 
-
-# #consul
-sudo tee /etc/consul.d/consul.hcl > /dev/null << EOF
-datacenter = "$dc_name"
-primary_gateways = ["$gwIP:443"]
-primary_datacenter = "$primary_dc"
-client_addr = "0.0.0.0"
-data_dir = "/opt/consul"
-license_path = "/opt/consul/license.hclic"
-encrypt = "$encryptkey"
-ca_file = "/opt/consul/tls/consul-agent-ca.pem"
-cert_file = "/opt/consul/tls/$dc_name-server-consul-0.pem"
-key_file = "/opt/consul/tls/$dc_name-server-consul-0-key.pem"
-verify_incoming = true
-verify_outgoing = true
-verify_server_hostname = true
-server = true
-bootstrap_expect = 1
-ui = true
-enable_central_service_config = true
-auto_encrypt {
-  allow_tls = true
-}
-acl = {
-  enabled = true
-  default_policy = "deny"
-  enable_token_persistence = true
-  tokens {
-    agent = "$replicationToken"
-    replication = "$replicationToken"
-  }
-
-}
-ports {
- grpc = 8502,
- https = 8501
-}
-connect {
-  enabled = true
-  enable_mesh_gateway_wan_federation = true
-}
-EOF
+sudo sed "s/\$dc_name/$dc_name/g;\
+  s/\$gwIP/$gwIP/g;\
+  s/\$primary_dc/$primary_dc/g;\
+  s/\$retry_join/$retry_join/g;\
+  s/\$encryptkey/$encryptkey/g;\
+  s/\$node_count/$node_count/g;\
+  s/\$replicationToken/$replicationToken/g "\
+  ../../../../config-files/primary-dc-server.hcl \
+  > /etc/consul.d/consul.hcl
 
 sudo chown -R consul:consul /opt/consul/
 sudo chown -R consul:consul /etc/consul.d/
