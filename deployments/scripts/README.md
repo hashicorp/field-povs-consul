@@ -22,6 +22,7 @@ Prerequisites: Have 3(Default) VM´s on the same network
 
 1. Open 1-consul_setup.sh
 Make sure to define followin variables according to your environment. The bellow is an example:
+
 ```
 dc_name="dc-1"
 node_count=3
