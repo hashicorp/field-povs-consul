@@ -22,13 +22,13 @@ Prerequisites: Have 3(Default) VM´s on the same network
 
 1. Open 1-consul_setup.sh
 Make sure to define followin variables according to your environment. The bellow is an example:
-
+```
 dc_name="dc-1"
 node_count=3
 local_ipv4="10.0.7.145"
 retry_join=[\"10.0.7.169:8301\",\"10.0.7.190:8301\",\"10.0.7.52:8301\"] #["provider=aws tag_key=consulserver tag_value=yes"]
 encryptkey="KxHMa9auQmZrFrv0me5kQxhHb23BEKKtkSJDEOWhW4o=" # run `consul keygen` to get a key
-
+```
 Run the script on all servers for the primary DC
 2. Run the script `2-acl_bootstrap.sh`
 This script will output the consul master token used. You will need this one in the following script
