@@ -7,6 +7,7 @@ local_ipv4="10.1.1.1"
 retry_join=[\"10.0.7.196:8301\",\"10.0.7.105:8301\",\"10.0.7.106:8301\"] 
 encryptkey="KxHMa9auQmZrFrv0me5kQxhHb23BEKKtkSJDEOWhW4o="
 isPrimaryDC=true
+consul_hclfile="../../../../config-files/primary-dc-server.hcl"
 
 retry_join=${retry_join}
 dc_name=${dc_name} 
@@ -25,7 +26,7 @@ sudo sed "s/\$dc_name/$dc_name/g;\
   s/\$encryptkey/$encryptkey/g;\
   s/\$node_count/$node_count/g;\
   s/\$retry_join/$retry_join/g "\
-  ../../../../config-files/primary-dc-server.hcl \
+  $consul_hclfile \
   > /etc/consul.d/consul.hcl
 
 sudo chown -R consul:consul /opt/consul/

@@ -9,6 +9,7 @@ retry_join=[\"10.0.7.246:8301\",\"10.0.7.14:8301\",\"10.0.7.59:8301\"] #["provid
 encryptkey="KxHMa9auQmZrFrv0me5kQxhHb23BEKKtkSJDEOWhW4o=" #"$(consul keygen)" 
 gwIP="15.236.207.173"
 replicationToken="7f380737-b86f-6d11-d54a-3bf77f58eb7f"
+consul_hclfile="../../../../config-files/secondary-dc-server.hcl"
 
 #the bellow is necessary for later integration with TF. Will make it nicer later
 primary_dc=${primary_dc}
@@ -16,7 +17,7 @@ dc_name=${dc_name}
 node_count=${node_count}
 gwIP=${gwIP}
 replicationToken=${replicationToken}
-
+consul_hclfile=${consul_hclfile}
 mkdir -p /opt/consul/tls/
 mkdir -p /opt/policies
 
@@ -29,7 +30,7 @@ sudo sed "s/\$dc_name/$dc_name/g;\
   s/\$encryptkey/$encryptkey/g;\
   s/\$node_count/$node_count/g;\
   s/\$replicationToken/$replicationToken/g "\
-  ../../../../config-files/primary-dc-server.hcl \
+  $consul_hclfile \
   > /etc/consul.d/consul.hcl
 
 sudo chown -R consul:consul /opt/consul/
