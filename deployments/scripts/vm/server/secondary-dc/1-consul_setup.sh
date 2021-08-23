@@ -29,6 +29,7 @@ datacenter = "$dc_name"
 primary_gateways = ["$gwIP:443"]
 primary_datacenter = "$primary_dc"
 client_addr = "0.0.0.0"
+retry_join = $retry_join
 data_dir = "/opt/consul"
 license_path = "/opt/consul/license.hclic"
 encrypt = "$encryptkey"
@@ -39,7 +40,7 @@ verify_incoming = true
 verify_outgoing = true
 verify_server_hostname = true
 server = true
-bootstrap_expect = 1
+bootstrap_expect = $node_count
 ui = true
 enable_central_service_config = true
 auto_encrypt {
