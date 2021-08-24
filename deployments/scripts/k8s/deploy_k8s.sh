@@ -16,11 +16,11 @@ where:
     -l Location of the license file
     -s K8s namespace to install consul in (default:default)
     -n node count (Default 3)
-    -r replication of the primary dc. In case of a secondary DC 
+    -r replication token from the primary dc. In case of a secondary DC 
     -e gossipEncryptionKey
     -f helmFile
 "
-while getopts :hd:n:i:r:e:p:f: flag
+while getopts :h:p:c:k:d:d1:g:l:s:n:r:e:f: flag
 do
   case "$flag" in
     p) isPrimaryDC=$OPTARG;;
@@ -48,10 +48,10 @@ node_count=${node_count:-3}
 isPrimaryDC=${isPrimaryDC:-true}
 nameSpace=${nameSpace:-"default"}
 
-if [ ! "$caCert" ] || [ ! "$caKey" ] || [ ! "$dcName" ] || [ ! "$primaryDC" ] || [ ! "$primaryGW" ] || [ ! "$licensFile" ] || [ ! "$replicationToken" ] || [ ! "$gossipEncryptionKey" ] || [ ! "$helmFile" ]; then
-  echo "Arguments -d -i -r -e -f must be provided"
-  echo "$usage" >&2; exit 1
-fi
+# if [ ! "$caCert" ] || [ ! "$caKey" ] || [ ! "$dcName" ] || [ ! "$primaryDC" ] || [ ! "$primaryGW" ] || [ ! "$licensFile" ] || [ ! "$replicationToken" ] || [ ! "$gossipEncryptionKey" ] || [ ! "$helmFile" ]; then
+#   echo "Arguments -d -i -r -e -f must be provided"
+#   echo "$usage" >&2; exit 1
+# fi
 
 #create the namespace if another namespace then default is used
 
@@ -67,8 +67,15 @@ kubectl create secret generic consul-ent-license \
 
 
 #https://www.consul.io/docs/k8s/installation/multi-cluster/kubernetes
-if !$isPrimaryDC
+if $isPrimaryDC
 then
+    kubectl create secret generic consul-federation -n $nameSpace  \
+    --from-literal=gossipEncryptionKey=$gossipEncryptionKey \
+
+     sed "s/"\$\{primaryDC\}"/${primaryDC}/g;s/"\$\{primaryGW\}"/$primaryGW/g;s/"\$\{dcName\}"/${dcName}/;s/"\$\{node_count\}"/${node_count}/g" \
+    $helmFile \
+    > helmdeploy.yaml
+else
     kubectl create secret generic consul-federation \
     --from-file=caCert=$caCert \
     --from-file=caKey=$caKey \
@@ -78,14 +85,7 @@ then
 
     sed "s/"\$\{primaryDC\}"/${primaryDC}/g;s/"\$\{primaryGW\}"/$primaryGW/g;s/"\$\{dcName\}"/${dcName}/;s/"\$\{node_count\}"/${node_count}/g" \
     $helmFile   \
-    > helmdeploy.yaml
-else
-    kubectl create secret generic consul-federation \
-    --from-literal=gossipEncryptionKey=$gossipEncryptionKey \
-
-     sed "s/"\$\{primaryDC\}"/${primaryDC}/g;s/"\$\{primaryGW\}"/$primaryGW/g;s/"\$\{dcName\}"/${dcName}/;s/"\$\{node_count\}"/${node_count}/g" \
-    ../helm/server-secondary.yaml   \
-    > helmdeploy.yaml
+    > helmdeploy.yaml 
 fi
 
 #https://www.consul.io/docs/k8s/installation/install

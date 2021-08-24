@@ -1,0 +1,49 @@
+global:
+  datacenter: dc1
+  name: consul
+  domain: consul
+  image: 'hashicorp/consul-enterprise:1.10.1-ent'
+  tls:
+    enabled: true
+  federation:
+    enabled: true
+    createFederationSecret: true
+  acls:
+    manageSystemACLs: true
+    createReplicationToken: true
+  gossipEncryption:
+    secretName: consul-federation
+    secretKey: gossipEncryptionKey
+  enableConsulNamespaces: true
+server:
+  enterpriseLicense:
+    secretName: consul-ent-license
+    secretKey: key
+    enableLicenseAutoload: true
+connectInject:
+  enabled: true
+  default: true
+  transparentProxy:
+    defaultEnabled: true
+  envoyExtraArgs: "--log-level debug"
+  consulNamespaces:
+    mirroringK8S: true
+controller:
+  enabled: true
+meshGateway:
+  enabled: true
+  replicas: 3
+ingressGateways:
+  enabled: true
+  gateways:
+    - name: ingress-gateway
+      service:
+        type: LoadBalancer
+ui:
+  service:
+    type: LoadBalancer
+syncCatalog:
+  enabled: true
+  consulNamespaces:
+    mirroringK8S: true
+  k8sDenyNamespaces: ["kube-system", "kube-public", "consul"]
