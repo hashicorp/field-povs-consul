@@ -3,7 +3,36 @@
 #meta
 #run this script only when all servers have been bootstrapped
 #sleep is necessary to make sure the servers have time to boostrap
-node_policyFile="/opt/consul/policies/node-policy.hcl"
+
+#location of the node policy file. This should be coppied by the deployment script to the right location
+usage="$(basename "$0") [-h] [-n Node Policy]
+
+where:
+    -h  show this help text
+    -n  location of the node policy file to be used
+"
+while getopts :hd:n:i:r:e:p:f: flag
+do
+  case "$flag" in
+    d) node_policyFile=$OPTARG;;
+    h) echo "$usage"
+       exit
+       ;;
+    :) printf "missing argument for -%s\n" "$OPTARG" >&2
+       echo "$usage" >&2
+       exit 1
+       ;;
+  esac
+done
+
+if [ ! "$node_policyFile" ] ; then
+  echo "Arguments -n must be provided"
+  echo "$usage" >&2; exit 1
+fi
+
+
+
+
 
 sleep 10
 

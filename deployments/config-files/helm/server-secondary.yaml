@@ -1,16 +1,23 @@
 global:
-  datacenter: dc1
+  datacenter: ${dcName}
   name: consul
   domain: consul
   image: 'hashicorp/consul-enterprise:1.10.1-ent'
   tls:
     enabled: true
+    caCert:
+      secretName: consul-federation
+      secretKey: caCert
+    caKey:
+      secretName: consul-federation
+      secretKey: caKey
   federation:
     enabled: true
-    createFederationSecret: true
   acls:
     manageSystemACLs: true
-    createReplicationToken: true
+    replicationToken:
+      secretName: consul-federation
+      secretKey: replicationToken
   gossipEncryption:
     secretName: consul-federation
     secretKey: gossipEncryptionKey
@@ -20,6 +27,11 @@ server:
     secretName: consul-ent-license
     secretKey: key
     enableLicenseAutoload: true
+  extraConfig: |
+    {
+      "primary_datacenter": "${primaryDC}",
+      "primary_gateways": ${primaryGW}
+    }
 connectInject:
   enabled: true
   default: true
@@ -32,13 +44,7 @@ controller:
   enabled: true
 meshGateway:
   enabled: true
-  replicas: 2
-ingressGateways:
-  enabled: true
-  gateways:
-    - name: ingress-gateway
-      service:
-        type: LoadBalancer
+  replicas: ${node_count}
 ui:
   service:
     type: LoadBalancer
