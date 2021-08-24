@@ -1,6 +1,7 @@
 global:
   name: consul
   datacenter: dc3
+  image: 'hashicorp/consul-enterprise:latest'
   tls:
     enabled: true
     caCert:
@@ -19,6 +20,10 @@ global:
   gossipEncryption:
     secretName: consul-federation
     secretKey: gossipEncryptionKey
+server:
+  enterpriseLicense:
+      secretName: 'consul-ent-license'
+      secretKey: 'key'
 connectInject:
   enabled: true
 controller:
