@@ -1,0 +1,11 @@
+[Unit]
+Description=mesh-gateway
+After=network-online.target
+Wants=consul.service
+[Service]
+ExecStart=/usr/bin/consul connect envoy -expose-servers -gateway=mesh -register -service "mesh-gateway" -address "${lan_ipv4}:443" -wan-address "${wan_ipv4}:443" -token "${mesh_gateway_token}" -- -l debug
+Restart=always
+RestartSec=5
+StartLimitIntervalSec=0
+[Install]
+WantedBy=multi-user.target

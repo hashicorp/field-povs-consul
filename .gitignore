@@ -1,0 +1,6 @@
+#tls
+*.pem
+*.srl
+*.crt
+*.key
+*.csr
