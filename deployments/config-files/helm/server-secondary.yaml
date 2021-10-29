@@ -27,11 +27,13 @@ server:
     secretName: consul-ent-license
     secretKey: key
     enableLicenseAutoload: true
-  extraConfig: |
-    {
-      "primary_datacenter": "${primaryDC}",
-      "primary_gateways": ${primaryGW}
-    }
+  extraVolumes:
+    - type: secret
+      name: consul-federation
+      items:
+        - key: serverConfigJSON
+          path: config.json
+      load: true
 connectInject:
   enabled: true
   default: true
@@ -45,6 +47,7 @@ controller:
 meshGateway:
   enabled: true
   replicas: ${node_count}
+
 ui:
   service:
     type: LoadBalancer

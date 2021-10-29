@@ -22,7 +22,7 @@ server:
     enableLicenseAutoload: true
 connectInject:
   enabled: true
-  default: true
+  default: false
   transparentProxy:
     defaultEnabled: true
   envoyExtraArgs: "--log-level debug"
@@ -47,3 +47,4 @@ syncCatalog:
   consulNamespaces:
     mirroringK8S: true
   k8sDenyNamespaces: ["kube-system", "kube-public", "consul"]
+  k8sPrefix: "tcmb-"
