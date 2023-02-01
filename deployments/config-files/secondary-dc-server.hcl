@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 datacenter = "$dc_name"
 primary_gateways = ["$gwIP:443"]
 primary_datacenter = "$primary_dc"

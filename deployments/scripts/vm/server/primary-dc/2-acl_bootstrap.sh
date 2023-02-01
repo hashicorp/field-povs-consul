@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 #build 8
 #meta
 #run this script only when all servers have been bootstrapped

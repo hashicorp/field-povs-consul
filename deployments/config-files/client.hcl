@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 datacenter = "$dc_name"
 client_addr = "0.0.0.0"
 bind_addr = "$local_ipv4"

@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 #meta
 
 #to be run on one server and then copy over to the others.

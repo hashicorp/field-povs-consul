@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 
 caCert="certs_test/consul-agent-ca.pem"
 caKey="certs_test/consul-agent-ca-key.pem"
