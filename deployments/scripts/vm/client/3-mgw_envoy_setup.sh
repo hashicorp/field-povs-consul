@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 dc_name="dc-2"
 mgw_token="1c2e8315-e082-06a6-8261-2cfbb47acd85"
 
